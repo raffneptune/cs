@@ -47,7 +47,7 @@
 
 <h1>Kumpulan Kode C#</h1>
 
-<h2>1. </h2>
+<h2>1. Absensi</h2>
 <pre><code class="code-block">
 using System;
 using System.Collections.Generic;
@@ -103,49 +103,1079 @@ class Program
 }
 </code></pre>
 
-<h2>2. </h2>
+<h2>2. Barbershop</h2>
 <pre><code class="code-block">
+using System;
+using System.Collections.Generic;
 
+class Barbershop
+{
+    private List<string> antrian;  // List untuk menyimpan nama pelanggan
+    private bool buka;  // Status barbershop
+
+    public Barbershop()
+    {
+        antrian = new List<string>();
+        buka = true;
+    }
+
+    // Fungsi untuk membuka Barbershop
+    public void BukaBarbershop()
+    {
+        Console.WriteLine("Barbershop sedang buka, silakan masuk!");
+    }
+
+    // Fungsi untuk menutup Barbershop
+    public void TutupBarbershop()
+    {
+        buka = false;
+        Console.WriteLine("Barbershop sudah tutup. Terima kasih sudah datang!");
+    }
+
+    // Fungsi untuk menambah pelanggan ke dalam antrian
+    public void TambahPelanggan(string nama)
+    {
+        if (buka)
+        {
+            if (antrian.Count < 10)  // Maksimal antrian 10 pelanggan
+            {
+                antrian.Add(nama);
+                Console.WriteLine($"{nama} telah masuk ke antrian.");
+            }
+            else
+            {
+                Console.WriteLine("Antrian sudah penuh!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Barbershop sudah tutup. Anda tidak bisa mendaftar.");
+        }
+    }
+
+    // Fungsi untuk memproses pelanggan
+    public void ProsesPelanggan()
+    {
+        if (antrian.Count > 0)
+        {
+            string pelanggan = antrian[0];
+            Console.WriteLine($"Sedang melayani {pelanggan}...");
+            System.Threading.Thread.Sleep(2000);  // Simulasi waktu pemotongan rambut
+            Console.WriteLine($"{pelanggan} telah selesai dilayani.");
+
+            // Menghapus pelanggan dari antrian
+            antrian.RemoveAt(0);
+        }
+        else
+        {
+            Console.WriteLine("Tidak ada pelanggan di antrian.");
+        }
+    }
+
+    // Fungsi untuk menampilkan antrian
+    public void TampilkanAntrian()
+    {
+        if (antrian.Count > 0)
+        {
+            Console.WriteLine("Antrian pelanggan:");
+            for (int i = 0; i < antrian.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {antrian[i]}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Tidak ada pelanggan di antrian.");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Barbershop barbershop = new Barbershop();
+        barbershop.BukaBarbershop();
+
+        while (true)
+        {
+            Console.WriteLine("\n--- Menu ---");
+            Console.WriteLine("1. Tambah Pelanggan");
+            Console.WriteLine("2. Proses Pelanggan");
+            Console.WriteLine("3. Lihat Antrian");
+            Console.WriteLine("4. Tutup Barbershop");
+            Console.WriteLine("5. Keluar");
+
+            Console.Write("Pilih menu (1-5): ");
+            int pilihan = int.Parse(Console.ReadLine());
+
+            if (pilihan == 1)
+            {
+                Console.Write("Masukkan nama pelanggan: ");
+                string nama = Console.ReadLine();
+                barbershop.TambahPelanggan(nama);
+            }
+            else if (pilihan == 2)
+            {
+                barbershop.ProsesPelanggan();
+            }
+            else if (pilihan == 3)
+            {
+                barbershop.TampilkanAntrian();
+            }
+            else if (pilihan == 4)
+            {
+                barbershop.TutupBarbershop();
+                break;
+            }
+            else if (pilihan == 5)
+            {
+                Console.WriteLine("Terima kasih telah menggunakan program ini!");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Pilihan tidak valid, coba lagi.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>3. </h2>
+<h2>3. Bioskop</h2>
 <pre><code class="code-block">
+using System;
 
+class Program
+{
+    // Menampilkan daftar film yang tersedia
+    static void ShowFilms()
+    {
+        Console.WriteLine("Daftar Film yang Tersedia:");
+        Console.WriteLine("1. Film A - Harga: Rp 50000");
+        Console.WriteLine("2. Film B - Harga: Rp 60000");
+        Console.WriteLine("3. Film C - Harga: Rp 70000");
+        Console.WriteLine("4. Film D - Harga: Rp 55000");
+    }
+
+    // Memilih film yang diinginkan oleh pengguna
+    static int PilihFilm()
+    {
+        int pilihan;
+        while (true)
+        {
+            Console.Write("\nPilih film (1-4): ");
+            if (int.TryParse(Console.ReadLine(), out pilihan) && pilihan >= 1 && pilihan <= 4)
+            {
+                return pilihan;
+            }
+            else
+            {
+                Console.WriteLine("Pilihan tidak valid, coba lagi.");
+            }
+        }
+    }
+
+    // Proses membeli tiket
+    static void BeliTiket()
+    {
+        int pilihan, jumlahTiket, totalHarga;
+        
+        while (true)
+        {
+            ShowFilms();
+            pilihan = PilihFilm();
+            
+            // Menghitung harga berdasarkan film yang dipilih
+            switch (pilihan)
+            {
+                case 1:
+                    totalHarga = 50000;
+                    break;
+                case 2:
+                    totalHarga = 60000;
+                    break;
+                case 3:
+                    totalHarga = 70000;
+                    break;
+                case 4:
+                    totalHarga = 55000;
+                    break;
+                default:
+                    totalHarga = 0;
+                    break;
+            }
+
+            // Input jumlah tiket
+            Console.Write("Masukkan jumlah tiket yang ingin dibeli: ");
+            while (!int.TryParse(Console.ReadLine(), out jumlahTiket) || jumlahTiket <= 0)
+            {
+                Console.Write("Jumlah tiket tidak valid, coba lagi: ");
+            }
+            
+            totalHarga *= jumlahTiket; // Menghitung total harga
+            
+            // Menampilkan hasil pembelian
+            Console.WriteLine($"\nTiket untuk film {GetFilmName(pilihan)} ({jumlahTiket} tiket) berhasil dipesan.");
+            Console.WriteLine($"Total harga: Rp {totalHarga}");
+
+            // Tanya apakah ingin membeli tiket lagi
+            Console.Write("\nApakah Anda ingin membeli tiket lagi? (y/t): ");
+            char lagi = Char.ToLower(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+
+            if (lagi == 't')
+            {
+                Console.WriteLine("Terima kasih telah membeli tiket di bioskop kami!");
+                break;
+            }
+        }
+    }
+
+    // Mendapatkan nama film berdasarkan pilihan
+    static string GetFilmName(int pilihan)
+    {
+        switch (pilihan)
+        {
+            case 1: return "Film A";
+            case 2: return "Film B";
+            case 3: return "Film C";
+            case 4: return "Film D";
+            default: return "Film Tidak Diketahui";
+        }
+    }
+
+    // Program utama
+    static void Main()
+    {
+        BeliTiket();
+    }
+}
 </code></pre>
 
-<h2>4. </h2>
+<h2>4. Dealer Kartu (Black Jack Simplified)</h2>
 <pre><code class="code-block">
+using System;
+using System.Collections.Generic;
 
+class Blackjack
+{
+    // Daftar kartu dalam deck
+    static List<string> deck = new List<string> { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
+
+    // Fungsi untuk menghitung nilai kartu
+    static int CardValue(string card)
+    {
+        if (card == "J" || card == "Q" || card == "K")
+        {
+            return 10;
+        }
+        else if (card == "A")
+        {
+            return 11; // Menganggap Ace = 11 untuk kesederhanaan
+        }
+        else
+        {
+            return int.Parse(card); // Kartu angka (2-10)
+        }
+    }
+
+    // Fungsi untuk membagikan kartu secara acak
+    static string DealCard(ref List<string> deck)
+    {
+        Random rand = new Random();
+        int index = rand.Next(deck.Count);
+        string card = deck[index];
+        deck.RemoveAt(index); // Hapus kartu yang sudah dibagikan
+        return card;
+    }
+
+    // Fungsi untuk menghitung total nilai kartu dalam hand
+    static int CalculateHand(List<string> hand)
+    {
+        int total = 0;
+        foreach (string card in hand)
+        {
+            total += CardValue(card);
+        }
+        return total;
+    }
+
+    // Fungsi utama untuk menjalankan permainan
+    static void StartGame()
+    {
+        List<string> deckCopy = new List<string>(deck); // Salinan deck untuk permainan
+
+        // Kartu untuk pemain dan dealer
+        List<string> playerHand = new List<string>();
+        List<string> dealerHand = new List<string>();
+
+        // Membagikan dua kartu untuk pemain dan dealer
+        playerHand.Add(DealCard(ref deckCopy));
+        playerHand.Add(DealCard(ref deckCopy));
+        dealerHand.Add(DealCard(ref deckCopy));
+        dealerHand.Add(DealCard(ref deckCopy));
+
+        // Menampilkan kartu awal pemain dan dealer (satu kartu dealer tersembunyi)
+        Console.WriteLine("Kartu Anda: " + string.Join(" ", playerHand) + " dengan nilai " + CalculateHand(playerHand));
+        Console.WriteLine("Kartu Dealer: " + dealerHand[0] + " dan kartu tersembunyi");
+
+        // Giliran pemain
+        while (CalculateHand(playerHand) < 21)
+        {
+            Console.Write("Apakah Anda ingin 'Hit' atau 'Stand'? ");
+            string action = Console.ReadLine().ToLower();
+            if (action == "hit")
+            {
+                playerHand.Add(DealCard(ref deckCopy));
+                Console.WriteLine("Kartu Anda sekarang: " + string.Join(" ", playerHand) + " dengan nilai " + CalculateHand(playerHand));
+            }
+            else if (action == "stand")
+            {
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Pilihan tidak valid. Pilih 'Hit' atau 'Stand'.");
+            }
+        }
+
+        // Jika pemain melebihi 21
+        if (CalculateHand(playerHand) > 21)
+        {
+            Console.WriteLine("Nilai kartu Anda melebihi 21! Anda kalah!");
+            return;
+        }
+
+        // Giliran dealer (dealer akan 'hit' sampai total kartu >= 17)
+        Console.WriteLine("Kartu Dealer sekarang: " + string.Join(" ", dealerHand) + " dengan nilai " + CalculateHand(dealerHand));
+        while (CalculateHand(dealerHand) < 17)
+        {
+            Console.WriteLine("Dealer memukul kartu...");
+            dealerHand.Add(DealCard(ref deckCopy));
+            Console.WriteLine("Kartu Dealer sekarang: " + string.Join(" ", dealerHand) + " dengan nilai " + CalculateHand(dealerHand));
+        }
+
+        // Menentukan pemenang
+        int playerTotal = CalculateHand(playerHand);
+        int dealerTotal = CalculateHand(dealerHand);
+
+        if (dealerTotal > 21)
+        {
+            Console.WriteLine("Dealer melebihi 21! Anda menang!");
+        }
+        else if (playerTotal > dealerTotal)
+        {
+            Console.WriteLine("Anda menang!");
+        }
+        else if (playerTotal < dealerTotal)
+        {
+            Console.WriteLine("Dealer menang!");
+        }
+        else
+        {
+            Console.WriteLine("Hasil seri!");
+        }
+    }
+
+    // Fungsi utama untuk menjalankan permainan
+    static void Main()
+    {
+        Console.WriteLine("Selamat datang di permainan Dealer Kartu!");
+        StartGame();
+    }
+}
 </code></pre>
 
-<h2>5. </h2>
+<h2>5. Diler Kendaraan</h2>
 <pre><code class="code-block">
+using System;
+using System.Collections.Generic;
 
+class Vehicle
+{
+    public string Model { get; private set; }
+    public int Price { get; private set; }
+    public int Stock { get; private set; }
+
+    public Vehicle(string model, int price, int stock)
+    {
+        Model = model;
+        Price = price;
+        Stock = stock;
+    }
+
+    // Menampilkan informasi kendaraan
+    public void DisplayInfo()
+    {
+        Console.WriteLine($"Model: {Model}, Harga: Rp{Price}, Stok: {Stock}");
+    }
+
+    // Mengupdate stok setelah pembelian
+    public void UpdateStock(int quantity)
+    {
+        Stock -= quantity;
+        if (Stock < 0)
+        {
+            Stock = 0;
+        }
+    }
+
+    // Memeriksa ketersediaan stok
+    public bool IsAvailable(int quantity)
+    {
+        return Stock >= quantity;
+    }
+}
+
+class VehicleDealer
+{
+    private List<Vehicle> vehicles = new List<Vehicle>();
+
+    // Menambahkan kendaraan ke diler
+    public void AddVehicle(string model, int price, int stock)
+    {
+        Vehicle vehicle = new Vehicle(model, price, stock);
+        vehicles.Add(vehicle);
+    }
+
+    // Menampilkan semua kendaraan yang tersedia
+    public void DisplayVehicles()
+    {
+        if (vehicles.Count == 0)
+        {
+            Console.WriteLine("Tidak ada kendaraan di diler.");
+            return;
+        }
+
+        Console.WriteLine("\nKendaraan yang Tersedia di Diler:");
+        for (int i = 0; i < vehicles.Count; i++)
+        {
+            Console.Write($"{i + 1}. ");
+            vehicles[i].DisplayInfo();
+        }
+    }
+
+    // Pembelian kendaraan
+    public void PurchaseVehicle()
+    {
+        DisplayVehicles();
+        if (vehicles.Count == 0) return;
+
+        try
+        {
+            Console.Write("\nPilih kendaraan (masukkan nomor): ");
+            int choice = int.Parse(Console.ReadLine());
+            Console.Write("Berapa banyak yang ingin dibeli? ");
+            int quantity = int.Parse(Console.ReadLine());
+
+            if (choice < 1 || choice > vehicles.Count)
+            {
+                Console.WriteLine("Pilihan tidak valid.");
+                return;
+            }
+
+            Vehicle selectedVehicle = vehicles[choice - 1];
+            if (selectedVehicle.IsAvailable(quantity))
+            {
+                int totalPrice = selectedVehicle.Price * quantity;
+                Console.WriteLine($"\nPembelian Sukses! Total Harga: Rp{totalPrice}");
+                selectedVehicle.UpdateStock(quantity);
+            }
+            else
+            {
+                Console.WriteLine("\nStok tidak cukup.");
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Input tidak valid.");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        VehicleDealer dealer = new VehicleDealer();
+
+        // Menambahkan beberapa kendaraan ke diler
+        dealer.AddVehicle("Mobil Sedan", 300000000, 10);
+        dealer.AddVehicle("Motor Sport", 100000000, 5);
+        dealer.AddVehicle("Mobil SUV", 500000000, 3);
+
+        while (true)
+        {
+            Console.WriteLine("\n--- Menu Diler Kendaraan ---");
+            Console.WriteLine("1. Lihat kendaraan yang tersedia");
+            Console.WriteLine("2. Pembelian kendaraan");
+            Console.WriteLine("3. Keluar");
+
+            Console.Write("\nPilih menu: ");
+            int choice;
+            if (int.TryParse(Console.ReadLine(), out choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        dealer.DisplayVehicles();
+                        break;
+                    case 2:
+                        dealer.PurchaseVehicle();
+                        break;
+                    case 3:
+                        Console.WriteLine("Terima kasih telah mengunjungi diler kami!");
+                        return;
+                    default:
+                        Console.WriteLine("Pilihan tidak valid.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Masukkan pilihan yang valid.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>6. </h2>
+<h2>6. Gaji</h2>
 <pre><code class="code-block">
+using System;
 
+class Program
+{
+    // Fungsi untuk menghitung gaji total
+    static double HitungGaji(double gajiPokok, double tunjangan, double potongan)
+    {
+        return gajiPokok + tunjangan - potongan;
+    }
+
+    static void Main()
+    {
+        double gajiPokok, tunjangan, potongan, gajiTotal;
+
+        // Menampilkan judul program
+        Console.WriteLine("Program Perhitungan Gaji Karyawan");
+
+        // Input data
+        Console.Write("Masukkan gaji pokok: Rp ");
+        gajiPokok = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Masukkan tunjangan: Rp ");
+        tunjangan = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Masukkan potongan: Rp ");
+        potongan = Convert.ToDouble(Console.ReadLine());
+
+        // Menghitung gaji total
+        gajiTotal = HitungGaji(gajiPokok, tunjangan, potongan);
+
+        // Menampilkan hasil perhitungan
+        Console.WriteLine("\nRingkasan Gaji:");
+        Console.WriteLine($"Gaji Pokok: Rp {gajiPokok}");
+        Console.WriteLine($"Tunjangan: Rp {tunjangan}");
+        Console.WriteLine($"Potongan: Rp {potongan}");
+        Console.WriteLine($"Gaji Total: Rp {gajiTotal}");
+    }
+}
 </code></pre>
 
-<h2>7. </h2>
+<h2>7. Kafe</h2>
 <pre><code class="code-block">
+using System;
+using System.Collections.Generic;
 
+class Cafe
+{
+    // Menyimpan menu dan harga
+    private Dictionary<string, int> menu;
+    // Menyimpan pesanan dan jumlah item
+    private Dictionary<string, int> pesanan;
+
+    public Cafe()
+    {
+        // Inisialisasi menu kafe dengan harga
+        menu = new Dictionary<string, int>
+        {
+            { "Kopi", 15000 },
+            { "Teh", 10000 },
+            { "Espresso", 20000 },
+            { "Cappuccino", 25000 },
+            { "Kue", 12000 }
+        };
+        
+        pesanan = new Dictionary<string, int>();
+    }
+
+    // Menampilkan menu kafe
+    public void TampilkanMenu()
+    {
+        Console.WriteLine("\n--- Menu Kafe ---");
+        foreach (var item in menu)
+        {
+            Console.WriteLine($"{item.Key}: Rp {item.Value}");
+        }
+    }
+
+    // Menambah pesanan
+    public void TambahPesanan()
+    {
+        while (true)
+        {
+            TampilkanMenu();
+            Console.Write("\nMasukkan nama item yang ingin dipesan (ketik 'selesai' untuk mengakhiri): ");
+            string pesananItem = Console.ReadLine().Trim();
+
+            if (pesananItem.ToLower() == "selesai")
+            {
+                break;
+            }
+
+            if (menu.ContainsKey(pesananItem))
+            {
+                Console.Write($"Berapa banyak {pesananItem} yang ingin dipesan? ");
+                int jumlah;
+                if (int.TryParse(Console.ReadLine(), out jumlah) && jumlah > 0)
+                {
+                    if (pesanan.ContainsKey(pesananItem))
+                    {
+                        pesanan[pesananItem] += jumlah;
+                    }
+                    else
+                    {
+                        pesanan[pesananItem] = jumlah;
+                    }
+                    Console.WriteLine($"{jumlah} {pesananItem} telah ditambahkan ke pesanan.");
+                }
+                else
+                {
+                    Console.WriteLine("Jumlah tidak valid. Silakan coba lagi.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Item tidak ada dalam menu. Silakan coba lagi.");
+            }
+        }
+    }
+
+    // Menghitung total harga pesanan
+    public int HitungTotal()
+    {
+        int total = 0;
+        foreach (var item in pesanan)
+        {
+            total += menu[item.Key] * item.Value;
+        }
+        return total;
+    }
+
+    // Menampilkan pesanan dan total harga
+    public void TampilkanPesanan()
+    {
+        if (pesanan.Count == 0)
+        {
+            Console.WriteLine("\nTidak ada pesanan.");
+        }
+        else
+        {
+            Console.WriteLine("\n--- Pesanan Anda ---");
+            foreach (var item in pesanan)
+            {
+                Console.WriteLine($"{item.Key} x {item.Value} = Rp {menu[item.Key] * item.Value}");
+            }
+            Console.WriteLine($"\nTotal yang harus dibayar: Rp {HitungTotal()}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Cafe cafe = new Cafe();
+        int pilihan;
+
+        while (true)
+        {
+            Console.WriteLine("\n--- Selamat Datang di Kafe! ---");
+            Console.WriteLine("1. Lihat Menu");
+            Console.WriteLine("2. Tambah Pesanan");
+            Console.WriteLine("3. Lihat Pesanan dan Total");
+            Console.WriteLine("4. Keluar");
+
+            Console.Write("Pilih menu (1-4): ");
+            if (int.TryParse(Console.ReadLine(), out pilihan))
+            {
+                switch (pilihan)
+                {
+                    case 1:
+                        cafe.TampilkanMenu();
+                        break;
+                    case 2:
+                        cafe.TambahPesanan();
+                        break;
+                    case 3:
+                        cafe.TampilkanPesanan();
+                        break;
+                    case 4:
+                        Console.WriteLine("Terima kasih telah mengunjungi kafe kami. Sampai jumpa!");
+                        return;
+                    default:
+                        Console.WriteLine("Pilihan tidak valid. Silakan coba lagi.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Pilihan tidak valid. Silakan coba lagi.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>8. </h2>
+<h2>8. Kalkulator</h2>
 <pre><code class="code-block">
+using System;
 
+class Program
+{
+    // Fungsi untuk penjumlahan
+    static double Tambah(double x, double y)
+    {
+        return x + y;
+    }
+
+    // Fungsi untuk pengurangan
+    static double Kurang(double x, double y)
+    {
+        return x - y;
+    }
+
+    // Fungsi untuk perkalian
+    static double Kali(double x, double y)
+    {
+        return x * y;
+    }
+
+    // Fungsi untuk pembagian
+    static double Bagi(double x, double y)
+    {
+        if (y != 0)
+        {
+            return x / y;
+        }
+        else
+        {
+            Console.WriteLine("Tidak bisa membagi dengan nol");
+            return 0;  // Mengembalikan nilai 0 jika pembagian dengan nol
+        }
+    }
+
+    static void Main()
+    {
+        int pilihan;
+        double num1, num2;
+
+        // Menampilkan menu operasi
+        Console.WriteLine("Pilih operasi:");
+        Console.WriteLine("1. Tambah");
+        Console.WriteLine("2. Kurang");
+        Console.WriteLine("3. Kali");
+        Console.WriteLine("4. Bagi");
+
+        // Meminta input pilihan operasi
+        Console.Write("Masukkan pilihan (1/2/3/4): ");
+        pilihan = int.Parse(Console.ReadLine());
+
+        // Meminta input angka
+        Console.Write("Masukkan angka pertama: ");
+        num1 = double.Parse(Console.ReadLine());
+        Console.Write("Masukkan angka kedua: ");
+        num2 = double.Parse(Console.ReadLine());
+
+        // Melakukan operasi sesuai dengan pilihan pengguna
+        switch (pilihan)
+        {
+            case 1:
+                Console.WriteLine("{0} + {1} = {2:F2}", num1, num2, Tambah(num1, num2));
+                break;
+            case 2:
+                Console.WriteLine("{0} - {1} = {2:F2}", num1, num2, Kurang(num1, num2));
+                break;
+            case 3:
+                Console.WriteLine("{0} * {1} = {2:F2}", num1, num2, Kali(num1, num2));
+                break;
+            case 4:
+                double hasilBagi = Bagi(num1, num2);
+                if (num2 != 0)  // Mengecek apakah pembagian berhasil
+                {
+                    Console.WriteLine("{0} / {1} = {2:F2}", num1, num2, hasilBagi);
+                }
+                break;
+            default:
+                Console.WriteLine("Pilihan tidak valid!");
+                break;
+        }
+    }
+}
 </code></pre>
 
-<h2>9. </h2>
+<h2>9. Kasir</h2>
 <pre><code class="code-block">
+using System;
+using System.Collections.Generic;
 
+public class Barang
+{
+    public string Nama { get; set; }
+    public double Harga { get; set; }
+    public int Jumlah { get; set; }
+    public double Total { get; set; }
+}
+
+class Program
+{
+    static void Main()
+    {
+        List<Barang> daftarBarang = new List<Barang>();
+        double totalHarga = 0;
+        int pilihan;
+        string namaBarang;
+        double harga;
+        int jumlah;
+        double uangDibayar;
+
+        while (true)
+        {
+            Console.WriteLine("\nMenu Kasir");
+            Console.WriteLine("1. Tambah barang");
+            Console.WriteLine("2. Tampilkan rincian belanja");
+            Console.WriteLine("3. Bayar");
+            Console.WriteLine("4. Keluar");
+            Console.Write("Pilih menu (1/2/3/4): ");
+            pilihan = Convert.ToInt32(Console.ReadLine());
+
+            if (pilihan == 1)
+            {
+                Console.Write("Masukkan nama barang: ");
+                namaBarang = Console.ReadLine();
+
+                Console.Write("Masukkan harga barang: ");
+                harga = Convert.ToDouble(Console.ReadLine());
+
+                Console.Write("Masukkan jumlah barang: ");
+                jumlah = Convert.ToInt32(Console.ReadLine());
+
+                // Tambah barang
+                Barang barang = new Barang
+                {
+                    Nama = namaBarang,
+                    Harga = harga,
+                    Jumlah = jumlah,
+                    Total = harga * jumlah
+                };
+
+                daftarBarang.Add(barang);
+                totalHarga += barang.Total;
+
+                Console.WriteLine($"{namaBarang} x{jumlah} ditambahkan ke daftar belanja.");
+            }
+            else if (pilihan == 2)
+            {
+                // Tampilkan rincian belanja
+                Console.WriteLine("\n--- Rincian Belanja ---");
+                foreach (var barang in daftarBarang)
+                {
+                    Console.WriteLine($"{barang.Nama} - Harga: {barang.Harga:F2} - Jumlah: {barang.Jumlah} - Total: {barang.Total:F2}");
+                }
+                Console.WriteLine($"\nTotal Belanja: {totalHarga:F2}");
+            }
+            else if (pilihan == 3)
+            {
+                // Tampilkan rincian belanja dan proses pembayaran
+                Console.WriteLine("\n--- Rincian Belanja ---");
+                foreach (var barang in daftarBarang)
+                {
+                    Console.WriteLine($"{barang.Nama} - Harga: {barang.Harga:F2} - Jumlah: {barang.Jumlah} - Total: {barang.Total:F2}");
+                }
+                Console.WriteLine($"\nTotal Belanja: {totalHarga:F2}");
+
+                Console.Write("Masukkan uang yang dibayar: ");
+                uangDibayar = Convert.ToDouble(Console.ReadLine());
+
+                if (uangDibayar >= totalHarga)
+                {
+                    double kembalian = uangDibayar - totalHarga;
+                    Console.WriteLine($"\nTotal yang harus dibayar: {totalHarga:F2}");
+                    Console.WriteLine($"Uang yang dibayar: {uangDibayar:F2}");
+                    Console.WriteLine($"Kembalian: {kembalian:F2}");
+                }
+                else
+                {
+                    Console.WriteLine("\nUang yang dibayar kurang dari total belanja. Transaksi dibatalkan.");
+                }
+            }
+            else if (pilihan == 4)
+            {
+                Console.WriteLine("Terima kasih, sampai jumpa!");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Pilihan tidak valid, coba lagi.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>10. </h2>
+<h2>10. Kereta</h2>
 <pre><code class="code-block">
-
+    using System;
+    using System.Collections.Generic;
+    
+    class Kereta
+    {
+        public string NamaKereta { get; set; }
+        public string Tujuan { get; set; }
+        public string WaktuBerangkat { get; set; }
+        public int Kapasitas { get; set; }
+        public int Terisi { get; set; }
+    
+        public Kereta(string namaKereta, string tujuan, string waktuBerangkat, int kapasitas)
+        {
+            NamaKereta = namaKereta;
+            Tujuan = tujuan;
+            WaktuBerangkat = waktuBerangkat;
+            Kapasitas = kapasitas;
+            Terisi = 0;
+        }
+    
+        public void TampilkanInfo()
+        {
+            Console.WriteLine($"Nama Kereta: {NamaKereta}");
+            Console.WriteLine($"Tujuan: {Tujuan}");
+            Console.WriteLine($"Waktu Berangkat: {WaktuBerangkat}");
+            Console.WriteLine($"Kapasitas: {Kapasitas}");
+            Console.WriteLine($"Terisi: {Terisi}/{Kapasitas}");
+            Console.WriteLine();
+        }
+    
+        public void PesanTiket(int jumlahTiket)
+        {
+            if (Terisi + jumlahTiket <= Kapasitas)
+            {
+                Terisi += jumlahTiket;
+                Console.WriteLine($"Berhasil memesan {jumlahTiket} tiket untuk {NamaKereta}.");
+            }
+            else
+            {
+                Console.WriteLine($"Maaf, hanya tersisa {Kapasitas - Terisi} tiket untuk {NamaKereta}.");
+            }
+        }
+    }
+    
+    class SistemKereta
+    {
+        private List<Kereta> keretaList;
+    
+        public SistemKereta()
+        {
+            keretaList = new List<Kereta>();
+        }
+    
+        public void TambahKereta(Kereta kereta)
+        {
+            keretaList.Add(kereta);
+        }
+    
+        public void TampilkanJadwal()
+        {
+            Console.WriteLine("Jadwal Kereta:");
+            foreach (var kereta in keretaList)
+            {
+                kereta.TampilkanInfo();
+            }
+        }
+    
+        public void PesanTiketKereta(string namaKereta, int jumlahTiket)
+        {
+            bool ditemukan = false;
+            foreach (var kereta in keretaList)
+            {
+                if (kereta.NamaKereta == namaKereta)
+                {
+                    kereta.PesanTiket(jumlahTiket);
+                    ditemukan = true;
+                    break;
+                }
+            }
+    
+            if (!ditemukan)
+            {
+                Console.WriteLine($"Kereta dengan nama {namaKereta} tidak ditemukan.");
+            }
+        }
+    }
+    
+    class Program
+    {
+        static void Main()
+        {
+            SistemKereta sistemKereta = new SistemKereta();
+    
+            // Menambahkan kereta ke sistem
+            Kereta kereta1 = new Kereta("Ekspres Jakarta", "Bandung", "10:00", 100);
+            Kereta kereta2 = new Kereta("Argo Bromo", "Surabaya", "15:00", 150);
+            Kereta kereta3 = new Kereta("Kelas Ekonomi", "Yogyakarta", "12:00", 200);
+    
+            sistemKereta.TambahKereta(kereta1);
+            sistemKereta.TambahKereta(kereta2);
+            sistemKereta.TambahKereta(kereta3);
+    
+            int pilihan;
+            string namaKereta;
+            int jumlahTiket;
+    
+            while (true)
+            {
+                Console.WriteLine("\nMenu:");
+                Console.WriteLine("1. Tampilkan Jadwal Kereta");
+                Console.WriteLine("2. Pesan Tiket Kereta");
+                Console.WriteLine("3. Keluar");
+    
+                Console.Write("Pilih menu (1/2/3): ");
+                pilihan = int.Parse(Console.ReadLine());
+    
+                if (pilihan == 1)
+                {
+                    sistemKereta.TampilkanJadwal();
+                }
+                else if (pilihan == 2)
+                {
+                    Console.Write("Masukkan nama kereta yang ingin dipesan: ");
+                    namaKereta = Console.ReadLine();
+                    Console.Write("Masukkan jumlah tiket yang ingin dipesan: ");
+                    jumlahTiket = int.Parse(Console.ReadLine());
+                    sistemKereta.PesanTiketKereta(namaKereta, jumlahTiket);
+                }
+                else if (pilihan == 3)
+                {
+                    Console.WriteLine("Terima kasih telah menggunakan sistem kereta.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Pilihan tidak valid. Silakan coba lagi.");
+                }
+            }
+        }
+    }
 </code></pre>
 
 <h2>Mau Lebih Banyak Kode? Lihat Di Github Saya (Kode 11 - 20)</h2>
